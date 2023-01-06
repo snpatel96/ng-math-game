@@ -1,27 +1,20 @@
-import { Component } from '@angular/core';
-import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl } from '@angular/forms';
+import { MathValidators } from '../math-validators';
 
 @Component({
   selector: 'app-equation',
   templateUrl: './equation.component.html',
   styleUrls: ['./equation.component.css'],
 })
-export class EquationComponent {
+export class EquationComponent implements OnInit {
   mathForm = new FormGroup(
     {
       firstValue: new FormControl(this.randomNumber()),
       secondValue: new FormControl(this.randomNumber()),
       answer: new FormControl(''),
     },
-    [
-      (form: AbstractControl) => {
-        const { firstValue, secondValue, answer } = form.value;
-        if (firstValue + secondValue === parseInt(answer)) {
-          return null;
-        }
-        return { addition: true };
-      },
-    ]
+    [MathValidators.addition('answer', 'firstValue', 'secondValue')]
   );
 
   get firstValue() {
@@ -30,6 +23,10 @@ export class EquationComponent {
 
   get secondValue() {
     return this.mathForm.value.secondValue;
+  }
+
+  ngOnInit() {
+    this.mathForm.statusChanges.subscribe((value) => console.log(value));
   }
 
   randomNumber() {

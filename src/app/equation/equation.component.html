@@ -7,4 +7,4 @@
 
 <div>Form is valid : {{ mathForm.valid }}</div>
 <div>Form values : {{ mathForm.value | json }}</div>
-<div>Form Errors : {{ mathForm.get("answer")?.errors }}</div>
+<div>Form Errors : {{ mathForm.errors | json }}</div>
